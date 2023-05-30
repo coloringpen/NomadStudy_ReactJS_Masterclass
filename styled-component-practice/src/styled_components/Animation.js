@@ -43,6 +43,11 @@ const Box = styled.div`
 			opacity: 0;
 		}
 	}
+	/**
+	span:hover{...} 하고 여기에 써두는 것과 같은
+	span {
+		&:hover{...}
+	 }의 효과 */
 `;
 
 export default function Animation() {
