@@ -1,10 +1,10 @@
 import Circle from "./components/Circle";
+import StateWithTS from "./components/StateWithTS";
 
 function App() {
 	return (
 		<div>
-			<Circle bgColor="teal" borderColor="black" text="i'm here" />
-			<Circle bgColor="tomato" />
+			<StateWithTS />
 		</div>
 	);
 }
