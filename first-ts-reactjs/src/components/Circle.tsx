@@ -10,6 +10,7 @@ interface CircleProps {
 	// 타입은 component를 정의할 때 주는 것임을 기억하기
 	bgColor: string;
 	borderColor?: string;
+	text?: string;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -19,11 +20,18 @@ const Container = styled.div<ContainerProps>`
 	background-color: ${(props) => props.bgColor};
 	border: 1px solid ${(props) => props.borderColor};
 	border-radius: 50%;
+	text-align: center;
 `;
-export default function Circle({ bgColor, borderColor }: CircleProps) {
+export default function Circle({
+	bgColor,
+	borderColor,
+	text = "default value",
+}: CircleProps) {
 	return (
 		<>
-			<Container bgColor={bgColor} borderColor={borderColor ?? "green"} />
+			<Container bgColor={bgColor} borderColor={borderColor ?? "green"}>
+				{text}
+			</Container>
 		</>
 	);
 }
