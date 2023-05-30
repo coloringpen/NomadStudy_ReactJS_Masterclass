@@ -26,6 +26,14 @@ const rotationAnimation2 = keyframes`
 	border-radius: 20px;
 }`;
 
+const Emoji = () => {
+	return <span>🍓</span>;
+};
+
+const Emoji2 = styled.p`
+	font-size: 36px;
+`;
+
 const Box = styled.div`
 	height: 200px;
 	width: 200px;
@@ -34,13 +42,10 @@ const Box = styled.div`
 	justify-content: center;
 	align-items: center;
 	animation: ${rotationAnimation2} 2s linear infinite;
-	span {
-		font-size: 36px;
+	${Emoji2} {
+		// 외부 styled component만 타게팅 가능. 그러므로 Emoji는 여기서 타겟 불가
 		&:hover {
-			font-size: 50px;
-		}
-		&:active {
-			opacity: 0;
+			font-size: 98px;
 		}
 	}
 	/**
@@ -54,7 +59,7 @@ export default function Animation() {
 	return (
 		<Wrapper>
 			<Box>
-				<span>🤩</span>
+				<Emoji2>🤩</Emoji2>
 			</Box>
 		</Wrapper>
 	);
