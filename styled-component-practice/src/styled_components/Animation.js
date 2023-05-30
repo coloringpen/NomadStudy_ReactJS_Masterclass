@@ -30,13 +30,27 @@ const Box = styled.div`
 	height: 200px;
 	width: 200px;
 	background-color: blanchedalmond;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	animation: ${rotationAnimation2} 2s linear infinite;
+	span {
+		font-size: 36px;
+		&:hover {
+			font-size: 50px;
+		}
+		&:active {
+			opacity: 0;
+		}
+	}
 `;
 
 export default function Animation() {
 	return (
 		<Wrapper>
-			<Box />
+			<Box>
+				<span>🤩</span>
+			</Box>
 		</Wrapper>
 	);
 }
