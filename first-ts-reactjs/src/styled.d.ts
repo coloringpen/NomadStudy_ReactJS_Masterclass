@@ -5,11 +5,8 @@ import "styled-components";
 declare module "styled-components" {
 	export interface DefaultTheme {
 		// theme의 형태를 지정할 위치
-		borderRadius: string;
-
-		colors: {
-			main: string;
-			secondary: string;
-		};
+		textColor: string;
+		bgColor: string;
+		btnColor: string;
 	}
 }
