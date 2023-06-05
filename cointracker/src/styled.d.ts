@@ -7,6 +7,6 @@ declare module "styled-components" {
 		// theme의 형태를 지정할 위치
 		textColor: string;
 		bgColor: string;
-		btnColor: string;
+		accentColor: string;
 	}
 }
