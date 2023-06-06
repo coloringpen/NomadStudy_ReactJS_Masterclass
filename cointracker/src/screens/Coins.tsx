@@ -4,40 +4,36 @@ import {
 	CoinsList,
 	Container,
 	Header,
+	Img,
+	Loader,
 	Title,
 } from "../styles/CoinStyles";
+import { useEffect, useState } from "react";
 
-const coins = [
-	{
-		id: "btc-bitcoin",
-		name: "Bitcoin",
-		symbol: "BTC",
-		rank: 1,
-		is_new: false,
-		is_active: true,
-		type: "coin",
-	},
-	{
-		id: "eth-ethereum",
-		name: "Ethereum",
-		symbol: "ETH",
-		rank: 2,
-		is_new: false,
-		is_active: true,
-		type: "coin",
-	},
-	{
-		id: "hex-hex",
-		name: "HEX",
-		symbol: "HEX",
-		rank: 3,
-		is_new: false,
-		is_active: true,
-		type: "token",
-	},
-];
+interface ICoinsData {
+	id: string;
+	name: string;
+	symbol: string;
+	rank: number;
+	is_new: boolean;
+	is_active: boolean;
+	type: string;
+}
 
 export default function Coins() {
+	const [coins, setCoins] = useState<ICoinsData[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
+	useEffect(() => {
+		(async () => {
+			const data = await (
+				await fetch("https://api.coinpaprika.com/v1/coins")
+			).json();
+			setCoins(data.slice(0, 100));
+			setIsLoading(false);
+			console.log(coins);
+		})();
+	}, []);
+
 	return (
 		<>
 			<Container>
@@ -45,11 +41,20 @@ export default function Coins() {
 					<Title>COINS</Title>
 				</Header>
 				<CoinsList>
-					{coins.map((item) => (
-						<CoinStyle key={item.id}>
-							<Link to={`/${item.id}`}>{item.name} &rarr;</Link>
-						</CoinStyle>
-					))}
+					{isLoading ? (
+						<Loader>on loading process</Loader>
+					) : (
+						coins.map((item) => (
+							<CoinStyle key={item.id}>
+								<Link to={`/${item.id}`} state={{}}>
+									<Img
+										src={`https://static.coinpaprika.com/coin/${item.id}/logo.png`}
+									/>
+									{item.name} &rarr;
+								</Link>
+							</CoinStyle>
+						))
+					)}
 				</CoinsList>
 			</Container>
 		</>
