@@ -1,10 +1,14 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { Container, Header, Title, Loader } from "../styles/CoinStyles";
 
 export default function Coin() {
 	const { coinID } = useParams();
 	const [isLoading, setIsLoading] = useState(true);
+	const {
+		state: { name },
+	} = useLocation();
+	console.log(name);
 	console.log(coinID);
 	return (
 		<>

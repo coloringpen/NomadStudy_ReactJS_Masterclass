@@ -46,7 +46,7 @@ export default function Coins() {
 					) : (
 						coins.map((item) => (
 							<CoinStyle key={item.id}>
-								<Link to={`/${item.id}`} state={{}}>
+								<Link to={`/${item.id}`} state={{ name: item.name }}>
 									<Img
 										src={`https://static.coinpaprika.com/coin/${item.id}/logo.png`}
 									/>
