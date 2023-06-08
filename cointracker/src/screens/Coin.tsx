@@ -2,19 +2,21 @@ import { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { Container, Header, Title, Loader } from "../styles/CoinStyles";
 
+interface IRouteState {
+	name: string;
+}
+
 export default function Coin() {
 	const { coinID } = useParams();
 	const [isLoading, setIsLoading] = useState(true);
-	const {
-		state: { name },
-	} = useLocation();
-	console.log(name);
+	const state = useLocation().state as IRouteState;
+	console.log(state.name);
 	console.log(coinID);
 	return (
 		<>
 			<Container>
 				<Header>
-					<Title>COINS</Title>
+					<Title>{state?.name || "Loading"}</Title>
 				</Header>
 
 				{isLoading ? <Loader>on loading process</Loader> : null}
