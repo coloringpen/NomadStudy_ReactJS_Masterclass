@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import { Container, Header, Title, Loader } from "../styles/CoinStyles";
+import { Link, Outlet, useLocation, useParams, useMatch } from "react-router-dom";
+import {
+	Container,
+	Header,
+	Title,
+	Loader,
+	Overview,
+	OverviewItem,
+	Description,
+	Tabs,
+	Tab,
+} from "../styles/CoinStyles";
 
 interface IRouteState {
 	name: string;
@@ -68,6 +78,8 @@ export default function Coin() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [coinDetailInfo, setCoinDetailInfo] = useState<IInfoData>();
 	const [coinPriceInfo, setCoinPriceInfo] = useState<IPriceData>();
+	const priceMatch = useMatch("/:coinID/price");
+	const chartMatch = useMatch("/:coinID/chart");
 
 	useEffect(() => {
 		(async () => {
@@ -85,15 +97,57 @@ export default function Coin() {
 			console.log(coinPriceData);
 		})();
 	}, []);
+
 	return (
 		<>
 			<Container>
 				<Header>
-					<Title>{state?.name || "Loading"}</Title>
-					{/** state가 있으면 .name 가져오고, 아니면 "Loading을 가져오기" */}
+					<Title>
+						{state?.name ? state.name : isLoading ? "Loading..." : coinDetailInfo?.name}
+					</Title>
 				</Header>
 
-				{isLoading ? <Loader>on loading process</Loader> : "nono"}
+				{isLoading ? (
+					<Loader>on loading process</Loader>
+				) : (
+					<>
+						<Overview>
+							<OverviewItem>
+								<span>Rank:</span>
+								<span>{coinDetailInfo?.rank}</span>
+							</OverviewItem>
+							<OverviewItem>
+								<span>Symbol:</span>
+								<span>${coinDetailInfo?.symbol}</span>
+							</OverviewItem>
+							<OverviewItem>
+								<span>Open Source:</span>
+								<span>{coinDetailInfo?.open_source ? "Yes" : "No"}</span>
+							</OverviewItem>
+						</Overview>
+						<Description>{coinDetailInfo?.description}</Description>
+						<Overview>
+							<OverviewItem>
+								<span>Total Supply:</span>
+								<span>{coinPriceInfo?.total_supply}</span>
+							</OverviewItem>
+							<OverviewItem>
+								<span>Max Supply:</span>
+								<span>{coinPriceInfo?.max_supply}</span>
+							</OverviewItem>
+						</Overview>
+						<Tabs>
+							<Tab isActive={priceMatch !== null}>
+								<Link to={`price`}>Price</Link>
+							</Tab>
+							<Tab isActive={chartMatch !== null}>
+								<Link to={`chart`}>Chart</Link>
+							</Tab>
+						</Tabs>
+
+						<Outlet />
+					</>
+				)}
 			</Container>
 		</>
 	);
