@@ -1,14 +1,8 @@
 import { Link } from "react-router-dom";
-import {
-	CoinStyle,
-	CoinsList,
-	Container,
-	Header,
-	Img,
-	Loader,
-	Title,
-} from "../styles/CoinStyles";
+import { CoinStyle, CoinsList, Container, Header, Img, Loader, Title } from "../styles/CoinStyles";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { fetchCoins } from "../api";
 
 interface ICoinsData {
 	id: string;
@@ -21,18 +15,21 @@ interface ICoinsData {
 }
 
 export default function Coins() {
-	const [coins, setCoins] = useState<ICoinsData[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
-	useEffect(() => {
-		(async () => {
-			const data = await (
-				await fetch("https://api.coinpaprika.com/v1/coins")
-			).json();
-			setCoins(data.slice(0, 100));
-			setIsLoading(false);
-			console.log(coins);
-		})();
-	}, []);
+	// const [coins, setCoins] = useState<ICoinsData[]>([]);
+	// const [isLoading, setIsLoading] = useState(true);
+	// useEffect(() => {
+	// 	(async () => {
+	// 		const data = await (
+	// 			await fetch("https://api.coinpaprika.com/v1/coins")
+	// 		).json();
+	// 		setCoins(data.slice(0, 100));
+	// 		setIsLoading(false);
+	// 		console.log(coins);
+	// 	})();
+	// }, []);
+	const { isLoading, data } = useQuery<ICoinsData[]>(["allCoins"], fetchCoins, {
+		select: (data) => data.slice(0, 100),
+	});
 
 	return (
 		<>
@@ -44,12 +41,10 @@ export default function Coins() {
 					{isLoading ? (
 						<Loader>on loading process</Loader>
 					) : (
-						coins.map((item) => (
+						data?.map((item) => (
 							<CoinStyle key={item.id}>
 								<Link to={`/${item.id}`} state={{ name: item.name }}>
-									<Img
-										src={`https://static.coinpaprika.com/coin/${item.id}/logo.png`}
-									/>
+									<Img src={`https://static.coinpaprika.com/coin/${item.id}/logo.png`} />
 									{item.name} &rarr;
 								</Link>
 							</CoinStyle>

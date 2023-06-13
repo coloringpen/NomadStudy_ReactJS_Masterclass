@@ -137,10 +137,10 @@ export default function Coin() {
 							</OverviewItem>
 						</Overview>
 						<Tabs>
-							<Tab isActive={priceMatch !== null}>
+							<Tab $isActive={priceMatch !== null}>
 								<Link to={`price`}>Price</Link>
 							</Tab>
-							<Tab isActive={chartMatch !== null}>
+							<Tab $isActive={chartMatch !== null}>
 								<Link to={`chart`}>Chart</Link>
 							</Tab>
 						</Tabs>
