@@ -11,6 +11,12 @@ import {
 	Tabs,
 	Tab,
 } from "../styles/CoinStyles";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCoinInfo, fetchCoinTickers } from "../api";
+
+interface IRouteParams {
+	coinID: string;
+}
 
 interface IRouteState {
 	name: string;
@@ -73,67 +79,73 @@ interface IPriceData {
 }
 
 export default function Coin() {
-	const { coinID } = useParams();
+	const { coinID } = useParams() as { coinID: string };
 	const state = useLocation().state as IRouteState;
-	const [isLoading, setIsLoading] = useState(true);
-	const [coinDetailInfo, setCoinDetailInfo] = useState<IInfoData>();
-	const [coinPriceInfo, setCoinPriceInfo] = useState<IPriceData>();
+	// const [isLoading, setIsLoading] = useState(true);
+	// const [coinDetailInfo, setCoinDetailInfo] = useState<IInfoData>();
+	// const [coinPriceInfo, setCoinPriceInfo] = useState<IPriceData>();
 	const priceMatch = useMatch("/:coinID/price");
 	const chartMatch = useMatch("/:coinID/chart");
 
-	useEffect(() => {
-		(async () => {
-			const coinDetailData = await (
-				await fetch(`https://api.coinpaprika.com/v1/coins/${coinID}`)
-			).json();
+	const { isLoading: infoLoading, data: infoData } = useQuery<IInfoData>(["info", coinID], () =>
+		fetchCoinInfo(coinID)
+	);
+	const { isLoading: tickersLoading, data: tickersData } = useQuery<IPriceData>(
+		["tickers", coinID],
+		() => fetchCoinTickers(coinID)
+	);
+	// useEffect(() => {
+	// 	(async () => {
+	// 		const coinDetailData = await (
+	// 			await fetch(`https://api.coinpaprika.com/v1/coins/${coinID}`)
+	// 		).json();
 
-			const coinPriceData = await (
-				await fetch(`https://api.coinpaprika.com/v1/tickers/${coinID}`)
-			).json();
-			setCoinDetailInfo(coinDetailData);
-			setCoinPriceInfo(coinPriceData);
-			setIsLoading(false);
-			console.log(coinDetailData);
-			console.log(coinPriceData);
-		})();
-	}, []);
+	// 		const coinPriceData = await (
+	// 			await fetch(`https://api.coinpaprika.com/v1/tickers/${coinID}`)
+	// 		).json();
+	// 		setCoinDetailInfo(coinDetailData);
+	// 		setCoinPriceInfo(coinPriceData);
+	// 		setIsLoading(false);
+	// 		console.log(coinDetailData);
+	// 		console.log(coinPriceData);
+	// 	})();
+	// }, []);
+	const loading = infoLoading || tickersLoading;
 
 	return (
 		<>
 			<Container>
 				<Header>
-					<Title>
-						{state?.name ? state.name : isLoading ? "Loading..." : coinDetailInfo?.name}
-					</Title>
+					<Title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</Title>
 				</Header>
 
-				{isLoading ? (
+				{loading ? (
 					<Loader>on loading process</Loader>
 				) : (
 					<>
 						<Overview>
 							<OverviewItem>
 								<span>Rank:</span>
-								<span>{coinDetailInfo?.rank}</span>
+								<span>{infoData?.rank}</span>
 							</OverviewItem>
 							<OverviewItem>
 								<span>Symbol:</span>
-								<span>${coinDetailInfo?.symbol}</span>
+								<span>${infoData?.symbol}</span>
 							</OverviewItem>
 							<OverviewItem>
 								<span>Open Source:</span>
-								<span>{coinDetailInfo?.open_source ? "Yes" : "No"}</span>
+								<span>{infoData?.open_source ? "Yes" : "No"}</span>
 							</OverviewItem>
 						</Overview>
-						<Description>{coinDetailInfo?.description}</Description>
+						<Description>{infoData?.description}</Description>
 						<Overview>
 							<OverviewItem>
 								<span>Total Supply:</span>
-								<span>{coinPriceInfo?.total_supply}</span>
+								<span>{tickersData?.total_supply}</span>
 							</OverviewItem>
 							<OverviewItem>
 								<span>Max Supply:</span>
-								<span>{coinPriceInfo?.max_supply}</span>
+								<span>{tickersData?.max_supply}</span>
 							</OverviewItem>
 						</Overview>
 						<Tabs>
