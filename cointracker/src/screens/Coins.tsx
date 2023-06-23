@@ -14,10 +14,6 @@ interface ICoinsData {
 	type: string;
 }
 
-interface IOutletContext {
-	toggleDark(): any;
-}
-
 export default function Coins() {
 	// const [coins, setCoins] = useState<ICoinsData[]>([]);
 	// const [isLoading, setIsLoading] = useState(true);
@@ -34,14 +30,13 @@ export default function Coins() {
 	const { isLoading, data } = useQuery<ICoinsData[]>(["allCoins"], fetchCoins, {
 		select: (data) => data.slice(0, 100),
 	});
-	const { toggleDark } = useOutletContext<IOutletContext>();
 
 	return (
 		<>
 			<Container>
 				<Header>
 					<Title>COINS</Title>
-					<button onClick={toggleDark}>go Dark mode</button>
+					<button>go Dark mode</button>
 				</Header>
 				<CoinsList>
 					{isLoading ? (
