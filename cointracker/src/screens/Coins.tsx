@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { CoinStyle, CoinsList, Container, Header, Img, Loader, Title } from "../styles/CoinStyles";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -12,6 +12,10 @@ interface ICoinsData {
 	is_new: boolean;
 	is_active: boolean;
 	type: string;
+}
+
+interface IOutletContext {
+	toggleDark(): any;
 }
 
 export default function Coins() {
@@ -30,12 +34,14 @@ export default function Coins() {
 	const { isLoading, data } = useQuery<ICoinsData[]>(["allCoins"], fetchCoins, {
 		select: (data) => data.slice(0, 100),
 	});
+	const { toggleDark } = useOutletContext<IOutletContext>();
 
 	return (
 		<>
 			<Container>
 				<Header>
 					<Title>COINS</Title>
+					<button onClick={toggleDark}>go Dark mode</button>
 				</Header>
 				<CoinsList>
 					{isLoading ? (

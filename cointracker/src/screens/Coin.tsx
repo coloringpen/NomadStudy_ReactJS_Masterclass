@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, Outlet, useLocation, useParams, useMatch } from "react-router-dom";
+import { Link, Outlet, useLocation, useParams, useMatch, useOutletContext } from "react-router-dom";
 import {
 	Container,
 	Header,
@@ -78,6 +78,11 @@ interface IPriceData {
 	};
 }
 
+interface IOutletContext {
+	// toggleDark(): any;
+	toggleDark: () => void;
+}
+
 export default function Coin() {
 	const { coinID } = useParams() as { coinID: string };
 	const state = useLocation().state as IRouteState;
@@ -111,6 +116,7 @@ export default function Coin() {
 	// 	})();
 	// }, []);
 	const loading = infoLoading || tickersLoading;
+	const { toggleDark } = useOutletContext<IOutletContext>();
 
 	return (
 		<>
@@ -118,6 +124,7 @@ export default function Coin() {
 				<Header>
 					<Title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</Title>
 				</Header>
+				<button onClick={toggleDark}>go Dark mode</button>
 
 				{loading ? (
 					<Loader>on loading process</Loader>
