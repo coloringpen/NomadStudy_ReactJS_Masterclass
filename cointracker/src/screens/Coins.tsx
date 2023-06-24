@@ -3,6 +3,8 @@ import { CoinStyle, CoinsList, Container, Header, Img, Loader, Title } from "../
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { fetchCoins } from "../api";
+import { useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 interface ICoinsData {
 	id: string;
@@ -15,28 +17,17 @@ interface ICoinsData {
 }
 
 export default function Coins() {
-	// const [coins, setCoins] = useState<ICoinsData[]>([]);
-	// const [isLoading, setIsLoading] = useState(true);
-	// useEffect(() => {
-	// 	(async () => {
-	// 		const data = await (
-	// 			await fetch("https://api.coinpaprika.com/v1/coins")
-	// 		).json();
-	// 		setCoins(data.slice(0, 100));
-	// 		setIsLoading(false);
-	// 		console.log(coins);
-	// 	})();
-	// }, []);
 	const { isLoading, data } = useQuery<ICoinsData[]>(["allCoins"], fetchCoins, {
 		select: (data) => data.slice(0, 100),
 	});
+	const setIsDark = useSetRecoilState(isDarkAtom);
 
 	return (
 		<>
 			<Container>
 				<Header>
 					<Title>COINS</Title>
-					<button>go Dark mode</button>
+					<button onClick={() => setIsDark((prev) => !prev)}>go Dark mode</button>
 				</Header>
 				<CoinsList>
 					{isLoading ? (

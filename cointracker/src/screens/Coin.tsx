@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useParams, useMatch, useOutletContext } from "react-router-dom";
 import {
 	Container,
@@ -13,6 +12,8 @@ import {
 } from "../styles/CoinStyles";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import { useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 interface IRouteParams {
 	coinID: string;
@@ -81,9 +82,6 @@ interface IPriceData {
 export default function Coin() {
 	const { coinID } = useParams() as { coinID: string };
 	const state = useLocation().state as IRouteState;
-	// const [isLoading, setIsLoading] = useState(true);
-	// const [coinDetailInfo, setCoinDetailInfo] = useState<IInfoData>();
-	// const [coinPriceInfo, setCoinPriceInfo] = useState<IPriceData>();
 	const priceMatch = useMatch("/:coinID/price");
 	const chartMatch = useMatch("/:coinID/chart");
 
@@ -94,22 +92,8 @@ export default function Coin() {
 		["tickers", coinID],
 		() => fetchCoinTickers(coinID)
 	);
-	// useEffect(() => {
-	// 	(async () => {
-	// 		const coinDetailData = await (
-	// 			await fetch(`https://api.coinpaprika.com/v1/coins/${coinID}`)
-	// 		).json();
 
-	// 		const coinPriceData = await (
-	// 			await fetch(`https://api.coinpaprika.com/v1/tickers/${coinID}`)
-	// 		).json();
-	// 		setCoinDetailInfo(coinDetailData);
-	// 		setCoinPriceInfo(coinPriceData);
-	// 		setIsLoading(false);
-	// 		console.log(coinDetailData);
-	// 		console.log(coinPriceData);
-	// 	})();
-	// }, []);
+	const setIsDark = useSetRecoilState(isDarkAtom);
 	const loading = infoLoading || tickersLoading;
 
 	return (
@@ -118,7 +102,7 @@ export default function Coin() {
 				<Header>
 					<Title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</Title>
 				</Header>
-				<button>go Dark mode</button>
+				<button onClick={() => setIsDark((prev) => !prev)}>go Dark mode</button>
 
 				{loading ? (
 					<Loader>on loading process</Loader>
