@@ -16,7 +16,7 @@ export const Header = styled.header`
 export const CoinsList = styled.ul``;
 
 export const CoinStyle = styled.li`
-	background-color: #dff9fb;
+	background-color: ${(props) => props.theme.pannelColor};
 	padding: 20px;
 	border-radius: 15px;
 	margin-bottom: 10px;
@@ -35,7 +35,7 @@ export const CoinStyle = styled.li`
 
 export const Title = styled.h1`
 	font-size: 48px;
-	color: ${(props) => props.theme.accentColor};
+	color: ${(props) => props.theme.pannelColor};
 `;
 
 export const Loader = styled.span`
@@ -52,7 +52,7 @@ export const Img = styled.img`
 export const Overview = styled.div`
 	display: flex;
 	justify-content: space-between;
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: ${(props) => props.theme.pannelColor};
 	padding: 10px 20px;
 	border-radius: 10px;
 `;
@@ -62,11 +62,13 @@ export const OverviewItem = styled.div`
 	flex-direction: column;
 	align-items: center;
 	span:first-child {
-		font-size: 10px;
+		color: ${(props) => props.theme.bgColor};
+		font-size: 11px;
 		font-weight: 400;
 		text-transform: uppercase;
 		margin-bottom: 5px;
 	}
+	font-weight: bolder;
 `;
 
 export const Description = styled.p`
@@ -85,9 +87,10 @@ export const Tab = styled.span<{ $isActive: boolean }>`
 	text-transform: uppercase;
 	font-size: 12px;
 	font-weight: 400;
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: ${(props) => props.theme.pannelColor};
 	padding: 7px 0px;
 	border-radius: 10px;
+	font-weight: bolder;
 	color: ${(props) => (props.$isActive ? props.theme.accentColor : props.theme.textColor)};
 	a {
 		display: block;
