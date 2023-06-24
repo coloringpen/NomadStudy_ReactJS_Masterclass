@@ -1,12 +1,13 @@
 import React from "react";
-import { ThemeProvider } from "styled-components";
-import { basicTheme } from "./theme";
+import { GlobalStyle } from "./styles/Global";
+import ToDoList from "./screens/ToDoList";
 
 function App() {
 	return (
-		<ThemeProvider theme={basicTheme}>
-			<div className="App"></div>
-		</ThemeProvider>
+		<>
+			<GlobalStyle />
+			<ToDoList />
+		</>
 	);
 }
 
