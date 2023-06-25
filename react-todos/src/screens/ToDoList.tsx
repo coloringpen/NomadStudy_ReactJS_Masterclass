@@ -33,10 +33,11 @@ import { ButtonStyle, FormFrameStyle } from "../styles/componentStyles";
 // }
 
 export default function ToDoList() {
-	const { register, handleSubmit } = useForm();
+	const { register, handleSubmit, formState } = useForm();
 	const onValid = (data: any) => {
 		console.log(data);
 	};
+	console.log(formState.errors);
 
 	return (
 		<>
@@ -49,7 +50,13 @@ export default function ToDoList() {
 					/>
 					<input {...register("lastName", { required: true })} placeholder="Last Name" />
 					<input {...register("username", { required: true })} placeholder="Username" />
-					<input {...register("pw", { required: true })} placeholder="password" />
+					<input
+						{...register("pw", {
+							required: "password is required",
+							minLength: { value: 10, message: "password should be longer than 10 chars" },
+						})}
+						placeholder="password"
+					/>
 					<input
 						{...register("pwConfirm", { required: true })}
 						placeholder="password confirmation"
