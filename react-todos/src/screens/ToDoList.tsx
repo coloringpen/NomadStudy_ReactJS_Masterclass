@@ -32,18 +32,47 @@ import { ButtonStyle, FormFrameStyle } from "../styles/componentStyles";
 // 	);
 // }
 
+interface IForm {
+	email: string;
+	firstName: string;
+	lastName: string;
+	username: string;
+	pw: string;
+	pwConfirm: string;
+}
+
 export default function ToDoList() {
-	const { register, handleSubmit, formState } = useForm();
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<IForm>();
 	const onValid = (data: any) => {
 		console.log(data);
 	};
-	console.log(formState.errors);
-
+	console.log(errors);
 	return (
 		<>
 			<div>
 				<FormFrameStyle onSubmit={handleSubmit(onValid)}>
-					<input {...register("email", { required: true })} placeholder="Email" />
+					<input
+						{...register("email", {
+							required: "email is required",
+							pattern: {
+								value: /^[A-Za-z0-9._%+-]+@naver.com$/,
+								message: "only naver email is allowed",
+							},
+						})}
+						placeholder="Email"
+					/>
+					<span>
+						{/* {errors.email?.type === "required"
+							? "required"
+							: errors.email?.type === "pattern"
+							? "email required"
+							: null} */}
+						{errors.email?.message}
+					</span>
 					<input
 						{...register("firstName", { required: true, minLength: 10 })}
 						placeholder="First Name"
