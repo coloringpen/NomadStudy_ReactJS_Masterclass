@@ -74,11 +74,20 @@ export default function ToDoList() {
 						{errors.email?.message}
 					</span>
 					<input
-						{...register("firstName", { required: true, minLength: 10 })}
+						{...register("firstName", { required: "your firstname is required", minLength: 10 })}
 						placeholder="First Name"
 					/>
-					<input {...register("lastName", { required: true })} placeholder="Last Name" />
-					<input {...register("username", { required: true })} placeholder="Username" />
+					<span>{errors.firstName?.message}</span>
+					<input
+						{...register("lastName", { required: "your lastname is required" })}
+						placeholder="Last Name"
+					/>
+					<span>{errors.lastName?.message}</span>
+					<input
+						{...register("username", { required: "your username is required" })}
+						placeholder="Username"
+					/>
+					<span>{errors.username?.message}</span>
 					<input
 						{...register("pw", {
 							required: "password is required",
@@ -86,10 +95,12 @@ export default function ToDoList() {
 						})}
 						placeholder="password"
 					/>
+					<span>{errors.pw?.message}</span>
 					<input
-						{...register("pwConfirm", { required: true })}
+						{...register("pwConfirm", { required: "password confirmation is required" })}
 						placeholder="password confirmation"
 					/>
+					<span>{errors.pwConfirm?.message}</span>
 					<ButtonStyle>Add</ButtonStyle>
 				</FormFrameStyle>
 			</div>
