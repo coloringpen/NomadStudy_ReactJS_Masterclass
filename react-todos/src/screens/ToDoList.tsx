@@ -46,9 +46,13 @@ export default function ToDoList() {
 		register,
 		handleSubmit,
 		formState: { errors },
+		setError,
 	} = useForm<IForm>();
-	const onValid = (data: any) => {
-		console.log(data);
+	const onValid = (data: IForm) => {
+		if (data.pw !== data.pwConfirm) {
+			setError("pwConfirm", { message: "password are not the same" }, { shouldFocus: true });
+		}
+		// setError("root.serverOffline", { type: "sever not working", message: "server not working" });
 	};
 	console.log(errors);
 	return (
@@ -74,7 +78,14 @@ export default function ToDoList() {
 						{errors.email?.message}
 					</span>
 					<input
-						{...register("firstName", { required: "your firstname is required", minLength: 10 })}
+						{...register("firstName", {
+							required: "your firstname is required",
+							validate: {
+								nameLimit: (value) =>
+									!value.includes("babo") ? true : "babo is not allowed as firstname",
+								lengthLimit: (value) => (value.length > 10 ? "shorten your name" : true),
+							},
+						})}
 						placeholder="First Name"
 					/>
 					<span>{errors.firstName?.message}</span>
@@ -102,6 +113,7 @@ export default function ToDoList() {
 					/>
 					<span>{errors.pwConfirm?.message}</span>
 					<ButtonStyle>Add</ButtonStyle>
+					{/* <span>{errors.root?.serverOffline.message}</span> */}
 				</FormFrameStyle>
 			</div>
 		</>
